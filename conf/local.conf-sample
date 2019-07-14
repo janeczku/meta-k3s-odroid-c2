@@ -1,0 +1,59 @@
+# Local configuration for meta-k3s-odroid-c2
+
+#
+# Bitbake environment
+#
+
+DL_DIR = "${HOME}/oe-downloads"
+BB_NUMBER_THREADS = "4"
+PARALLEL_MAKE = "-j 4"
+
+LICENSE_FLAGS_WHITELIST = "commercial"
+
+DISTRO = "poky"
+DISTRO_FEATURES = "ext2 usbhost ${DISTRO_FEATURES_LIBC}"
+DISTRO_FEATURES_BACKFILL_CONSIDERED += "pulseaudio opengl"
+PACKAGE_CLASSES = "package_ipk"
+SDKMACHINE = "x86_64"
+
+MACHINE = "odroid-c2"
+
+PREFERRED_VERSION_linux-stable = "5.1.%"
+
+USER_CLASSES = "image-mklibs image-prelink"
+
+PATCHRESOLVE = "noop"
+INHERIT += "rm_work"
+RM_OLD_IMAGE = "1"
+CONF_VERSION = "1"
+
+#
+# Switch to systemd
+#
+
+#DISTRO_FEATURES_append = " systemd"
+#DISTRO_FEATURES_BACKFILL_CONSIDERED += "sysvinit"
+#VIRTUAL-RUNTIME_init_manager = "systemd"
+#VIRTUAL-RUNTIME_initscripts = ""
+
+#
+# Required to completely remove busybox dependency
+#
+
+#VIRTUAL-RUNTIME_login_manager = "shadow-base"
+
+#
+# Boot medium
+#
+
+# use eMMC instead of SD card (changes boot.scr)
+# EMMC_BOOT = "1"
+# use the root upgrader with the SD card (changes boot.scr)
+# SD_UPGRADER_BOOT = "1"
+
+#
+# Set root password
+#
+
+INHERIT += "extrausers"
+EXTRA_USERS_PARAMS = "usermod -P changeme root; "
